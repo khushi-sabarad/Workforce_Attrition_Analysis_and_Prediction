@@ -11,7 +11,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.preprocessing import StandardScaler
 
 # Load the dataset
-df = pd.read_csv("C:/Users/Khushi/OneDrive/Desktop/coding/Workforce_Attrition_Analysis_and_Prediction/employee_attrition.csv")
+df = pd.read_csv("employee_attrition.csv")
 
 # Basic data exploration
 print(df.head())
@@ -27,6 +27,7 @@ print(df.isnull().sum())
 # Data visualization (EDA)
 sns.countplot(x='Attrition', data=df)
 plt.show()
+# imbalanced dataset (where one class significantly outweighs the other) Yes <<< No
 
 # Explore relationships between variables
 sns.countplot(x='Department', hue='Attrition', data=df)
@@ -69,3 +70,55 @@ print(confusion_matrix(y_test, y_pred))
 feature_importance = pd.DataFrame({'Feature': X.columns, 'Importance': abs(model.coef_[0])})
 feature_importance = feature_importance.sort_values('Importance', ascending=False)
 print(feature_importance.head(10))
+
+#OverTime_Yes: The most significant factor influencing attrition. Employees working overtime are much more likely to leave.
+#Frequent travel, JobRole_Laboratory Technician, MaritalStatus_Single, ears at the company, years in the current role, and department also play a role
+
+
+# Visualisations : Matplotlib
+
+# Visualization 1: Attrition Count
+plt.figure(figsize=(6, 4))
+sns.countplot(x='Attrition', data=df)
+plt.title('Attrition Count')
+plt.xticks([0, 1], ['No Attrition', 'Attrition'])  # Customize x-axis labels
+plt.show()
+
+# Visualization 2: Attrition by Department
+plt.figure(figsize=(10, 6))
+sns.countplot(x='Department', hue='Attrition', data=df)
+plt.title('Attrition by Department')
+plt.xticks(rotation=45, ha='right')  # Rotate x-axis labels for readability
+plt.show()
+
+# Visualization 3: Attrition by Job Role
+plt.figure(figsize=(14, 8))
+sns.countplot(x='JobRole', hue='Attrition', data=df)
+plt.title('Attrition by Job Role')
+plt.xticks(rotation=45, ha='right')
+plt.show()
+
+# Visualization 4: Attrition by Overtime
+plt.figure(figsize=(6, 4))
+sns.countplot(x='OverTime', hue='Attrition', data=df)
+plt.title('Attrition by Overtime')
+plt.show()
+
+# Visualization 5: Feature Importance
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Importance', y='Feature', data=feature_importance.head(10))
+plt.title('Top 10 Feature Importance')
+plt.show()
+
+# Visualization 6: Distribution of Numerical Features (Example: Age)
+plt.figure(figsize=(8, 5))
+sns.histplot(df['Age'], kde=True)
+plt.title('Distribution of Age')
+plt.show()
+
+# Visualization 7: Boxplot of Monthly Income by Attrition
+plt.figure(figsize=(8, 6))
+sns.boxplot(x='Attrition', y='MonthlyIncome', data=df)
+plt.title('Monthly Income by Attrition')
+plt.xticks([0, 1], ['No Attrition', 'Attrition'])
+plt.show()
